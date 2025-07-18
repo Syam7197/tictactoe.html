@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg,#1e3c72,#2a5298,#ff6a00);
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgba(40, 40, 40, 0.8);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
+            width: 80%;
+            max-width: 600px;
+            animation: fadeIn 1s ease both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 36px;
+            text-transform: uppercase;
+        }
+
+        button {
+    background: linear-gradient(135deg,#1e3c72,#2a5298,#ff6a00); /* dark grdegay gradient */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 50%;
+    height: 50px;
+    border-radius: 20px;
+    margin: 10px 0;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+        button:hover {
+            background-color: #007BFF;
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 10px;
+            justify-content: center;
+            margin: 20px auto;
+        }
+
+        .cell {
+            background-color: #1e3c72;
+            border: none;
+            border-radius: 0px;
+            font-size: 24px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .cell:hover {
+            background-color: #005fbb;
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        p, li {
+            font-size: 16px;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: box-shadow 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- Homepage Section -->
+    <div class="container" id="homepage">
+        <h1>TIC TAC TOE</h1>
+        <button onclick="showGame()">Play</button>
+        <button onclick="showTerms()">Terms & Conditions</button>
+        <button onclick="showContact()">Contact Us</button>
+    </div>
+
+    <!-- Game Section -->
+    <div class="container hidden" id="game">
+        <h1>Tic Tac Toe Game</h1>
+        <div class="turn" id="turn-indicator">Player Turn</div>
+        <div class="grid" id="grid">
+            <div class="cell" onclick="makeMove(this, 0)"></div>
+            <div class="cell" onclick="makeMove(this, 1)"></div>
+            <div class="cell" onclick="makeMove(this, 2)"></div>
+            <div class="cell" onclick="makeMove(this, 3)"></div>
+            <div class="cell" onclick="makeMove(this, 4)"></div>
+            <div class="cell" onclick="makeMove(this, 5)"></div>
+            <div class="cell" onclick="makeMove(this, 6)"></div>
+            <div class="cell" onclick="makeMove(this, 7)"></div>
+            <div class="cell" onclick="makeMove(this, 8)"></div>
+        </div>
+        <div class="turn" id="result-indicator"></div>
+        <button id="reset-button" onclick="resetGame()" class="hidden">Reset Game</button>
+        <button onclick="showHomepage()">Main Menu</button>
+    </div>
+
+    <!-- Terms and Conditions Section -->
+    <div class="container hidden" id="terms">
+        <h1>Terms and Conditions</h1>
+        <p>
+            <br>Here are the basic rules for playing Tic Tac Toe:</br>
+            <br>1. Objective: The goal is to be the first player to align three of your marks (either X or O) in a row—horizontally, vertically, or diagonally—on a 3x3 grid.</br>
+            <br>2. Setup: Draw a grid with three rows and three columns, creating nine squares. Each player chooses their mark (X or O).</br>
+            <br>3. Gameplay:</br>
+            <br> - Players take turns placing their mark in an empty square.</br>
+            <br> - The first player traditionally uses "X," but this can be decided mutually.</br>
+            <br> - The game ends when one player achieves three marks in a row or when all squares are filled without a winner (resulting in a tie).</br>
+            <br>4. Winning: The player who successfully aligns three marks in a row wins the game.</br>
+            <br>5. Tie: If all squares are filled and no player has aligned three marks, the game ends in a draw.</br>
+        </p>
+        <button onclick="showHomepage()">Back to Home</button>
+    </div>
+
+    <!-- Contact Us Section -->
+    <div class="container hidden" id="contact">
+        <h1>Contact Us</h1>
+        <form onsubmit="sendEmail(event)">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="email" id="email" placeholder="Your Email" required>
+            <textarea id="message" placeholder="Your Message" rows="5" required></textarea>
+            <button type="submit">Send Email</button>
+        </form>
+        <button onclick="showHomepage()">Back to Home</button>
+    </div>
+
+    <script>
+        let currentPlayer = 'X';
+        let board = Array(9).fill(null);
+        let gameActive = true;
+
+        const winningCombinations = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+            [0, 4, 8], [2, 4, 6]             // Diagonals
+        ];
+
+        function showGame() {
+            toggleSection('game');
+        }
+
+        function showTerms() {
+            toggleSection('terms');
+        }
+
+        function showHomepage() {
+            toggleSection('homepage');
+        }
+
+        function showContact() {
+            toggleSection('contact');
+        }
+
+        function toggleSection(sectionId) {
+            const sections = ['homepage', 'game', 'terms', 'contact'];
+            sections.forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        function makeMove(cell, index) {
+            if (!cell.innerText && gameActive) {
+                cell.innerText = currentPlayer;
+                board[index] = currentPlayer;
+
+                if (checkWinner(currentPlayer)) {
+                    document.getElementById('result-indicator').innerText = `Player ${currentPlayer} Wins!`;
+                    gameActive = false;
+                } else if (!board.includes(null)) {
+                    document.getElementById('result-indicator').innerText = "It's a Draw!";
+                    gameActive = false;
+                } else {
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                    document.getElementById('turn-indicator').innerText = `Player ${currentPlayer}'s Turn`;
+                }
+                document.getElementById('reset-button').classList.remove('hidden');
+            }
+        }
+
+        function checkWinner(player) {
+            return winningCombinations.some(combination =>
+                combination.every(index => board[index] === player)
+            );
+        }
+
+        function resetGame() {
+            board.fill(null);
+            gameActive = true;
+            currentPlayer = 'X';
+            document.getElementById('turn-indicator').innerText = "Player X's Turn";
+            document.getElementById('result-indicator').innerText = "";
+            document.querySelectorAll('.cell').forEach(cell => (cell.innerText = ""));
+            document.getElementById('reset-button').classList.add('hidden');
+        }
+
+        function sendEmail(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            const mailtoLink = `mailto:nandigamachari57@gmail.com?subject=Message from ${name}&body=${message} (${email})`;
+            window.location.href = mailtoLink;
+        }
+    </script>
+</body>
+</html>
